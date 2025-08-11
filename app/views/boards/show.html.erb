@@ -1,71 +1,106 @@
 <div>
   <div>
-    <h1>
-      Board #<%= @the_board.id %> details
-    </h1>
-
-    <div>
-      <div>
-        <a href="/boards">
-          Go back
-        </a>
-      </div>
-
-      <div>
-        <a href="/delete_board/<%= @the_board.id %>">
-          Delete board
-        </a>
-      </div>
-    </div>
-
-    <dl>
-      <dt>
-        Name
-      </dt>
-      <dd>
-        <%= @the_board.name %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_board.updated_at) %> ago
-      </dd>
-    </dl>
+    <nav aria-label="breadcrumb">
+      <ul>
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li><%= @the_board.name %></li>
+      </ul>
+    </nav>
   </div>
 </div>
-
-<hr>
-
 
 <div>
-  <div>
-    <h2>
-      Edit board
-    </h2>
-
-    <form action="/modify_board/<%= @the_board.id %>"  method="post" >
-      <div>
-        <label for="name_box">
-          Name
-        </label>
-
-        <input type="text" id="name_box" name="query_name" value="<%= @the_board.name %>">
-      </div>
-
-      <button>
-        Update board
-      </button>
-    </form>
-  </div>
+  <article>
+    <header>Active Posts</header>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Body</th>
+          <th>Posted on</th>
+          <th>Expires on</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @the_board.active_posts.order({:expires_on => :asc}).each do |active_post|%>
+          <tr>
+            <td><%= active_post.title %></td>
+            <td><%= active_post.body %></td>
+            <td><%= active_post.created_at.strftime("%b %e, %Y") %></td>
+            <td><%= active_post.expires_on.strftime("%b %e, %Y") %></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </article>
 </div>
 
-<hr>
+<article>
+  <div>
+    <div>
+      <header>Add a new post</header>
+
+      <form action="/insert_post"  method="post" >
+        <div>
+          <label for="title_box">
+            Title
+          </label>
+
+          <input type="text" id="title_box" name="query_title" placeholder="Enter a title for the post">
+        </div>
+
+        <div>
+          <label for="body_box">
+            Body
+          </label>
+
+          <textarea id="body_box" name="query_body" placeholder="Enter a body for the post"></textarea>
+        </div>
+
+        <div>
+          <label for="expires_on_box">
+            Expires on
+          </label>
+
+          <input type="date" id="expires_on_box" name="query_expires_on" >
+        </div>
+
+        <div>
+          <input type="hidden" id="board_id_box" name="query_board_id" value="<%= @the_board.id %>">
+        </div>
+
+        <button>
+          Add post
+        </button>
+      </form>
+    </div>
+  </div>
+</article>
+
+<div>
+  <article>
+    <header>Expired Posts</header>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Body</th>
+          <th>Posted on</th>
+          <th>Expires on</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @the_board.expired_posts.each do |expired_post|%>
+          <tr>
+            <td><%= expired_post.title %></td>
+            <td><%= expired_post.body %></td>
+            <td><%= expired_post.created_at.strftime("%b %e, %Y") %></td>
+            <td><%= expired_post.expires_on.strftime("%b %e, %Y") %></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+  </article>
+</div>

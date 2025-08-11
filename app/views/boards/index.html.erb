@@ -1,70 +1,33 @@
 <div>
   <div>
-    <h1>
-      Home
-    </h1>
+    <nav aria-label="breadcrumb">
+      <ul>
+        <li>Home</li>
+      </ul>
+    </nav>
   </div>
 </div>
 
 <div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          Name
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
+  <article>
+    <header>All boards</header>
+    <ul>
       <% @list_of_boards.each do |a_board| %>
-      <tr>
-        <td>
-          <%= a_board.id %>
-        </td>
-
-        <td>
-          <%= a_board.name %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_board.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_board.updated_at) %> ago
-        </td>
-
-        <td>
+        <li>
           <a href="/boards/<%= a_board.id %>">
-            Show details
+            <%= a_board.name %>
           </a>
-        </td>
-      </tr>
+        </li>
       <% end %>
-    </table>
-  </div>
+    </ul>
+  </article>
 </div>
 
-
-
 <div>
-  <div>
-    <h2>
+  <article>
+    <header>
       Add a new board
-    </h2>
+    </header>
 
     <form action="/insert_board" method="post">
       <div>
@@ -72,12 +35,12 @@
           Name
         </label>
 
-        <input type="text" id="name_box" name="query_name">
+        <input type="text" id="name_box" name="query_name" placeholder="Enter a name for your board">
       </div>
 
       <button>
-        Create board
+        Add board
       </button>
     </form>
-  </div>
+  </article>
 </div>
